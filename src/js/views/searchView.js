@@ -10,6 +10,7 @@ acc: 0 | acc + cur.length = 5 | newTitle = ['Pasta']
 acc: 5 | acc + cur.length = 9 | newTitle = ['Pasta', 'with']
 acc: 9 | acc + cur.length = 15 | newTitle = ['Pasta', 'with', 'tomato']
 acc: 15 | acc + cur.length = 18 | newTitle = ['Pasta', 'with', 'tomato']
+acc: 18 | acc + cur.length = 24 | newTitle = ['Pasta', 'with', 'tomato']
 */
 
 const limitRecipeTitle = (title, limit = 17) => {
@@ -21,6 +22,7 @@ const limitRecipeTitle = (title, limit = 17) => {
       }
       return acc + cur.length;
     }, 0);
+    return `${newTitle.join(" ")} ...`;
   }
   return title;
 };
@@ -35,7 +37,7 @@ const renderRecipe = recipe => {
               alt="${recipe.title}">
           </figure>
           <div class="results__data">
-              <h4 class="results__name">${recipe.title}</h4>
+              <h4 class="results__name">${limitRecipeTitle(recipe.title)}</h4>
               <p class="results__author">${recipe.publisher}</p>
           </div>
       </a>
