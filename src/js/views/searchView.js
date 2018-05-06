@@ -2,7 +2,10 @@ import { elements } from "./base";
 
 export const getInput = () => elements.searchInput.value;
 export const clearInput = () => (elements.searchInput.value = "");
-export const clearResults = () => (elements.searchResList.innerHTML = "");
+export const clearResults = () => {
+  elements.searchResList.innerHTML = "";
+  elements.searchResPages.innerHTML = "";
+};
 
 /*
 // 'Pasta with tomato and spinach'
@@ -51,12 +54,12 @@ const createButton = (page, type) =>
   <button class="btn-inline results__btn--${type}" data-goto="${
     type === "prev" ? page - 1 : page + 1
   }">
+    <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
     <svg class="search__icon">
         <use href="img/icons.svg#icon-triangle-${
           type === "prev" ? "left" : "right"
         }"></use>
     </svg>
-    <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
   </button>
 `;
 
