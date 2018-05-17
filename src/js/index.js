@@ -1,6 +1,11 @@
 import Search from "./models/Search";
+import Recipe from "./models/Recipe";
 import * as searchView from "./views/searchView";
-import { elements, renderLoader, clearLoader } from "./views/base";
+import {
+  elements,
+  renderLoader,
+  clearLoader
+} from "./views/base";
 
 /** Global state
  * - Search Object
@@ -44,3 +49,8 @@ elements.searchRes.addEventListener("click", e => {
     searchView.renderResults(state.search._result, goToPage);
   }
 });
+
+/*recipe controller*/
+const r = new Recipe(46956);
+r.getRecipe();
+console.log(r)
