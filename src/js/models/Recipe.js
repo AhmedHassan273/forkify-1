@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  key,
-  proxy
-} from '../config';
-
+import { key, proxy } from "../config";
 
 export default class Recipe {
   constructor(id) {
@@ -12,7 +8,9 @@ export default class Recipe {
 
   async getRecipe() {
     try {
-      const res = await axios(`${proxy}http://food2fork.com/api/get?key=${key}&rId=${this._id}`);
+      const res = await axios(
+        `${proxy}http://food2fork.com/api/get?key=${key}&rId=${this._id}`
+      );
       this._title = res.data.recipe.title;
       this._author = res.data.recipe.publisher;
       this._img = res.data.recipe.image_url;
@@ -20,7 +18,7 @@ export default class Recipe {
       this._ingredients = res.data.recipe.ingredients;
     } catch (err) {
       console.log(err);
-      alert('Something went wrong')
+      alert("Something went wrong");
     }
   }
 
@@ -33,5 +31,44 @@ export default class Recipe {
 
   calcServings() {
     this._servings = 4;
+  }
+
+  parseIngredients() {
+    const unitsLong = [
+      "tablespoons",
+      "tablespoon",
+      "ounces",
+      "ounce",
+      "teaspoons",
+      "teaspoon",
+      "cups",
+      "pounds"
+    ];
+    const unitsShort = [
+      "tbsp",
+      "tbsp",
+      "oz",
+      "oz",
+      "tsp",
+      "tsp",
+      "cup",
+      "pound"
+    ];
+
+    const newIngredients = this._ingredients.map(el => {
+      //uniform units
+      let ingredient = el.toLowerCase();
+      unitsLong.forEach((unit, i) => {
+        ingredient = ingredient.replace(unit, unitsShort[i]);
+      });
+
+      //remove parentheses
+      ingredient = ingredient.replace(/ *\([^)]*\) */g, " ");
+
+      //parse ingredients into count, unit and ingredient
+
+      return ingredient;
+    });
+    this._ingredients = newIngredients;
   }
 }

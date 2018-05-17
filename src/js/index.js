@@ -37,21 +37,6 @@ const controlSearch = async () => {
   }
 };
 
-//event listeners
-elements.searchForm.addEventListener("submit", e => {
-  e.preventDefault();
-  controlSearch();
-});
-
-elements.searchRes.addEventListener("click", e => {
-  const btn = e.target.closest(".btn-inline");
-  if (btn) {
-    const goToPage = parseInt(btn.dataset.goto, 10);
-    searchView.clearResults();
-    searchView.renderResults(state.search._result, goToPage);
-  }
-});
-
 /*recipe controller*/
 const controlRecipe = async () => {
   //get id from url by extracting the hash and replacing the # with nothing
@@ -62,6 +47,8 @@ const controlRecipe = async () => {
     //  create new recipe object
 
     state.recipe = new Recipe(id);
+    /*test*/
+    window.r = state.recipe;
 
     try {
       //  get recipe data
@@ -77,6 +64,21 @@ const controlRecipe = async () => {
     }
   }
 };
+
+//-event listeners
+elements.searchForm.addEventListener("submit", e => {
+  e.preventDefault();
+  controlSearch();
+});
+
+elements.searchRes.addEventListener("click", e => {
+  const btn = e.target.closest(".btn-inline");
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto, 10);
+    searchView.clearResults();
+    searchView.renderResults(state.search._result, goToPage);
+  }
+});
 // window.addEventListener("hashchange", controlRecipe);
 // window.addEventListener('load', controlRecipe);
 
