@@ -66,8 +66,43 @@ export default class Recipe {
       ingredient = ingredient.replace(/ *\([^)]*\) */g, " ");
 
       //parse ingredients into count, unit and ingredient
+      const arrIng = ingredient.split(" ");
+      const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
 
-      return ingredient;
+      let objIng;
+      if (unitIndex > -1) {
+        //there is a unit
+        const arrCount = arrIng.slice(0, unitIndex); // ex. 4 1/2 cups => [4, 1/2] -> eval("4+1/2") -> 4.5
+
+        let count;
+        if (arrCount.length === 1) {
+          count = arrIng[0].replace("-", "+");
+        } else {
+          count = eval(arrIng.slice(0, unitIndex).join("+"));
+        }
+
+        objIng = {
+          count,
+          unit: arrIng[unitIndex],
+          ingredient: arrIng.slice(unitIndex + 1).join(" ")
+        };
+      } else if (parseInt(arrIng[0], 10)) {
+        //there is no unit, but 1st element is a number
+        objIng = {
+          count: parseInt(arrIng[0], 10),
+          unit: "",
+          ingredient: arrIng.slice(1).join(" ")
+        };
+      } else if (unitIndex === -1) {
+        //there is NO unit and no number in 1st position
+        objIng = {
+          count: 1,
+          unit: "",
+          ingredient: ingredient
+        };
+      }
+
+      return objIng;
     });
     this._ingredients = newIngredients;
   }
