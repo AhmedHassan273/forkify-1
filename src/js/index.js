@@ -3,11 +3,8 @@ import Recipe from "./models/Recipe";
 import List from "./models/List";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
-import {
-  elements,
-  renderLoader,
-  clearLoader
-} from "./views/base";
+import * as listView from "./views/listView";
+import { elements, renderLoader, clearLoader } from "./views/base";
 
 /** Global state
  * - Search Object
@@ -43,7 +40,7 @@ const controlSearch = async () => {
   }
 };
 
-/*recipe controller*/
+//! recipe controller
 const controlRecipe = async () => {
   //get id from url by extracting the hash and replacing the # with nothing
   const id = window.location.hash.replace("#", "");
@@ -66,7 +63,7 @@ const controlRecipe = async () => {
       state.recipe.calcTime();
       state.recipe.calcServings();
 
-      // render recipe      
+      // render recipe
       clearLoader();
 
       recipeView.clearRecipe();
@@ -77,7 +74,7 @@ const controlRecipe = async () => {
   }
 };
 
-//-event listeners
+//! event listeners
 elements.searchForm.addEventListener("submit", e => {
   e.preventDefault();
   controlSearch();
@@ -98,19 +95,34 @@ elements.searchRes.addEventListener("click", e => {
   window.addEventListener(event, controlRecipe)
 );
 
-//handling recipe button clicks
-elements.recipe.addEventListener('click', e => {
+//! List Controller
+const controlList = () => {
+  //TODO Create a new list IF there is none yet
+  if (!state.list) {
+    state.list = new List();
+  }
+  //TODO Add each ingredient to the list and user interface
+  state.recipe._ingredients.forEach(el => {
+    const item = state.list.addItem(el.count, el.unit, el.ingredient);
+    listView.renderItem(item);
+  });
+};
+
+//* handling recipe button clicks
+elements.recipe.addEventListener("click", e => {
   e.preventDefault();
-  if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+  if (e.target.matches(".btn-decrease, .btn-decrease *")) {
     //decrease button is clicked
     if (state.recipe._servings > 1) {
-      state.recipe.updateServings('dec');
-      recipeView.updateServingsIngredients(state.recipe)
+      state.recipe.updateServings("dec");
+      recipeView.updateServingsIngredients(state.recipe);
     }
   }
-  if (e.target.matches('.btn-increase, .btn-increase *')) {
+  if (e.target.matches(".btn-increase, .btn-increase *")) {
     //increase button is clicked
-    state.recipe.updateServings('inc');
-    recipeView.updateServingsIngredients(state.recipe)
+    state.recipe.updateServings("inc");
+    recipeView.updateServingsIngredients(state.recipe);
+  } else if (e.target.matches(".recipe__btn--add, .recipe__btn--add *")) {
+    controlList();
   }
-})
+});
