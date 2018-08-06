@@ -69,7 +69,7 @@ const controlRecipe = async () => {
       clearLoader();
 
       recipeView.clearRecipe();
-      recipeView.renderRecipe(state.recipe);
+      recipeView.renderRecipe(state.recipe, state.likes.isLiked(id));
     } catch (error) {
       console.log(error);
     }
@@ -111,6 +111,9 @@ const controlList = () => {
 };
 
 //!! Likes Controller
+//^ temporary
+state.likes = new Likes();
+
 const controlLike = () => {
   if (!state.likes) {
     state.likes = new Likes();
