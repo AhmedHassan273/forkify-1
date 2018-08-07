@@ -113,6 +113,7 @@ const controlList = () => {
 //!! Likes Controller
 //^ temporary
 state.likes = new Likes();
+likesView.toggleLikeMenu(state.likes.getNumLikes());
 
 const controlLike = () => {
   if (!state.likes) {
@@ -130,19 +131,26 @@ const controlLike = () => {
       state.recipe._author,
       state.recipe._img
     );
+
     // Toggle the like button
     likesView.toggleLikeBtn(true);
+
     //Add like to UI list
-    console.log(state.likes);
+    likesView.renderLike(newLike);
+
     //> current has liked current recipe
   } else {
     // Remove like from state
     state.likes.deleteLike(currentID);
+
     // Toggle the like button
     likesView.toggleLikeBtn(false);
+
     //Remove like from UI list
-    console.log(state.likes);
+    likesView.deleteLike(currentID);
   }
+
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
 };
 
 //!! handle delete and update list item events
