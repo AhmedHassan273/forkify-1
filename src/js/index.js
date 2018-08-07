@@ -97,6 +97,19 @@ elements.searchRes.addEventListener("click", e => {
   window.addEventListener(event, controlRecipe)
 );
 
+window.addEventListener("load", () => {
+  state.likes = new Likes();
+
+  //restore likes
+  state.likes.readStorage();
+
+  //set button state
+  likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+  //render the existing likes
+  state.likes.likes.forEach(like => likesView.renderLike(like));
+});
+
 //!! List Controller
 const controlList = () => {
   // Create a new list IF there is none yet
@@ -111,9 +124,6 @@ const controlList = () => {
 };
 
 //!! Likes Controller
-//^ temporary
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes());
 
 const controlLike = () => {
   if (!state.likes) {
