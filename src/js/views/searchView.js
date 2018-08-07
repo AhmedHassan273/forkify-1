@@ -6,6 +6,7 @@ export const clearResults = () => {
   elements.searchResList.innerHTML = "";
   elements.searchResPages.innerHTML = "";
 };
+
 export const highlightSelected = id => {
   //const resultsArr = Array.from(document.querySelectorAll('.results__link'));
   const resultsArr = [...document.querySelectorAll(".results__link")];
@@ -24,7 +25,7 @@ acc: 15 | acc + cur.length = 18 | newTitle = ['Pasta', 'with', 'tomato']
 acc: 18 | acc + cur.length = 24 | newTitle = ['Pasta', 'with', 'tomato']
 */
 
-const limitRecipeTitle = (title, limit = 17) => {
+export const limitRecipeTitle = (title, limit = 17) => {
   const newTitle = [];
   if (title.length > limit) {
     title.split(" ").reduce((acc, cur) => {
@@ -37,6 +38,7 @@ const limitRecipeTitle = (title, limit = 17) => {
   }
   return title;
 };
+
 const renderRecipe = recipe => {
   const markup = `
     <li>
